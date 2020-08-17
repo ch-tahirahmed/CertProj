@@ -1,0 +1,41 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Install apt-update
+      apt:
+        update_cache: yes
+
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Install java jdk
+      apt:
+        name: openjdk-8-jdk
+        state: present
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+
+    - name: Copy Chromedriver for selenium tests on Slaves (worker-1, worker-2)
+      copy:
+        src: /root/temp/chromedriver
+        dest: /root/devops
+
+    - name: Install Chromium browser for selenium tests
+      apt:
+        name: chromium-browser
+        state: present
+
+    - name: Install Chromium driver on worker-1, worker-2
+      apt:
+        name: chromium-chromedriver
+        state: present
+
+    - shell: ls -lrt /root/devops
+
